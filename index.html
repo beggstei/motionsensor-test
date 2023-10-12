@@ -1,56 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <title>Accelerometer Demo</title>
 
-        #circle {
-            width: 50px;
-            height: 50px;
-            background-color: #3498db;
+        <style>
+        .indicatorDot{
+            width: 30px;
+            height: 30px;
+            background-color: #ffab56;
             border-radius: 50%;
-            position: absolute;
+            position:fixed;
         }
-    </style>
-</head>
-<body>
-    <div id="circle"></div>
+        </style>
 
-    <script>
-        if (typeof DeviceMotionEvent.requestPermission === 'function') {
-            DeviceMotionEvent.requestPermission()
-                .then(permissionState => {
-                    if (permissionState === 'granted') {
-                        startListeningToMotionSensor();
-                    } else {
-                        console.error('Permission denied.');
-                    }
-                })
-                .catch(console.error);
-        } else {
-            startListeningToMotionSensor();
-        }
-
-        function startListeningToMotionSensor() {
-            window.addEventListener('devicemotion', (event) => {
-                const circle = document.getElementById('circle');
-
-                const accelerationX = event.acceleration.x;
-                const accelerationY = event.acceleration.y;
-
-                // Adjust the circle's position based on motion sensor data
-                const circleLeft = window.innerWidth / 2 - circle.offsetWidth / 2 + accelerationX * 10;
-                const circleTop = window.innerHeight / 2 - circle.offsetHeight / 2 + accelerationY * 10;
-
-                circle.style.left = `${circleLeft}px`;
-                circle.style.top = `${circleTop}px`;
-            });
-        }
-    </script>
-</body>
+    <script></script>
+    </head>
+    <body style="background-color:lightblue;">
+        <button id="accelPermsButton"  style="height:50px;" onclick="getAccel()"><h1>Get Accelerometer Permissions</h1></button>
+        <div class="indicatorDot" style="left:30%; top:30%;"></div>
+    </body>
 </html>
