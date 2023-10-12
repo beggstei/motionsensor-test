@@ -9,51 +9,46 @@
             overflow: hidden;
         }
 
-        #data-output {
+        #circle {
+            width: 50px;
+            height: 50px;
+            background-color: #3498db;
+            border-radius: 50%;
             position: absolute;
-            top: 20px;
-            left: 20px;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 10px;
         }
     </style>
 </head>
 <body>
-    <div id="data-output"></div>
+    <div id="circle"></div>
 
     <script>
         if (typeof DeviceMotionEvent.requestPermission === 'function') {
             DeviceMotionEvent.requestPermission()
                 .then(permissionState => {
                     if (permissionState === 'granted') {
-                        startListeningToMotionSensors();
+                        startListeningToMotionSensor();
                     } else {
                         console.error('Permission denied.');
                     }
                 })
                 .catch(console.error);
         } else {
-            startListeningToMotionSensors();
+            startListeningToMotionSensor();
         }
 
-        function startListeningToMotionSensors() {
+        function startListeningToMotionSensor() {
             window.addEventListener('devicemotion', (event) => {
-                const dataOutput = document.getElementById('data-output');
+                const circle = document.getElementById('circle');
+
                 const accelerationX = event.acceleration.x;
                 const accelerationY = event.acceleration.y;
-                const accelerationZ = event.acceleration.z;
 
-                dataOutput.innerHTML = `Accelerometer Data:<br>X: ${accelerationX.toFixed(2)}<br>Y: ${accelerationY.toFixed(2)}<br>Z: ${accelerationZ.toFixed(2)}`;
-            });
+                // Adjust the circle's position based on motion sensor data
+                const circleLeft = window.innerWidth / 2 - circle.offsetWidth / 2 + accelerationX * 10;
+                const circleTop = window.innerHeight / 2 - circle.offsetHeight / 2 + accelerationY * 10;
 
-            window.addEventListener('deviceorientation', (event) => {
-                const dataOutput = document.getElementById('data-output');
-                const alpha = event.alpha;
-                const beta = event.beta;
-                const gamma = event.gamma;
-
-                dataOutput.innerHTML += `<br>Orientation Data:<br>Alpha: ${alpha.toFixed(2)}<br>Beta: ${beta.toFixed(2)}<br>Gamma: ${gamma.toFixed(2)}`;
+                circle.style.left = `${circleLeft}px`;
+                circle.style.top = `${circleTop}px`;
             });
         }
     </script>
